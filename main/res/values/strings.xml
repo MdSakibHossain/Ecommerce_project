@@ -68,4 +68,17 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_go_main">GoMainActivity</string>
+    
+    
+    <string-array name="Bangladesh_states">
+        <item>Dhaka</item>
+        <item>Barisal</item>
+        <item>Shelhet</item>
+        <item>Maymonshing</item>
+        <item>Chottogram</item>
+        <item>Noakhali</item>
+        <item>Rajshahi</item>
+        <item>Kumilla</item>
+        <item>Patuakhali</item>
+    </string-array>
 </resources>

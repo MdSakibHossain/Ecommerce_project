@@ -45,14 +45,15 @@
                 android:layout_gravity="center"
                 android:src="@mipmap/r1"
                 />
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/city"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                 android:layout_marginStart="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginTop="@dimen/dim_8dp"
+                android:layout_weight="1"
                 android:hint="City"
                 >
 
@@ -60,11 +61,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_14"
-                    android:inputType="text"
-                    android:textColor="@color/black"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/nin"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/locality"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -73,22 +76,21 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="@dimen/dim_8dp"
-
-                android:hint="Locality,area or street"
+                android:layout_weight="1"
+                android:hint="Locality, Area or street"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_14"
-                    android:inputType="textMultiLine"
                     android:lines="3"
-                    android:isScrollContainer="true"
-                    android:gravity="start"
-                    android:textColor="@color/black"
+                    android:inputType="textMultiLine"
+                    android:textColor="@color/nin"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/flat_no"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -97,22 +99,22 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="@dimen/dim_8dp"
-                android:hint="Flat number and building name*"
+                android:layout_weight="1"
+                android:hint="Flat no. and Building name"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_14"
-                    android:inputType="textMultiLine"
                     android:lines="3"
-                    android:isScrollContainer="true"
-                    android:gravity="start"
+                    android:inputType="textMultiLine"
                     android:textColor="@color/black"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
-<LinearLayout
+
+            <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/dim_8dp"
@@ -123,9 +125,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="@dimen/dim_8dp"
         android:layout_weight="1"
-        android:hint="Pincode"
+        android:hint="Pincode*"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -137,28 +140,19 @@
             />
 
     </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/use5"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/state_spinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:hint="State*"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/font_14"
-            android:inputType="textPersonName"
-            android:textColor="@color/black"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:background="@drawable/border_background"
+        android:backgroundTint="@color/nin"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp" />
 
 </LinearLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/landmark"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -206,7 +200,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_14"
                     android:inputType="textPersonName"
-                    android:textColor="@color/black"
+                    android:textColor="@color/nin"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -227,7 +221,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_14"
                     android:inputType="number"
-                    android:textColor="@color/black"
+                    android:textColor="@color/nin"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -249,7 +243,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/font_14"
                     android:inputType="number"
-                    android:textColor="@color/black"
+                    android:textColor="@color/nin"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>

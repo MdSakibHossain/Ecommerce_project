@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/background"
-    android:elevation="3dp"
+    android:id="@+id/product_details_tabs_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:elevation="3dp">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/product_details_tab_layout"
         android:layout_width="0dp"
-        app:tabTextColor="#807A7A"
-        app:tabSelectedTextColor="@color/nin"
-         app:tabIndicatorColor="@color/nin"
-        android:background="#F1EFEF"
         android:layout_height="wrap_content"
+        android:background="#F1EFEF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabIndicatorColor="@color/nin"
+        app:tabSelectedTextColor="@color/nin"
+        app:tabTextColor="#807A7A">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"

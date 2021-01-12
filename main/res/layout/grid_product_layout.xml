@@ -51,18 +51,26 @@
 
         <include
             layout="@layout/horizontal_scroll_item_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="160dp"
             app:layout_columnWeight="1" />
 
         <include
             layout="@layout/horizontal_scroll_item_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="160dp"
             app:layout_columnWeight="1" />
 
         <include
             layout="@layout/horizontal_scroll_item_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="160dp"
             app:layout_columnWeight="1" />
 
         <include
             layout="@layout/horizontal_scroll_item_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="160dp"
             app:layout_columnWeight="1" />
 
     </androidx.gridlayout.widget.GridLayout>

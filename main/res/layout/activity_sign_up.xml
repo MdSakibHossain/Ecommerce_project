@@ -27,13 +27,14 @@
         android:id="@+id/create_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="108dp"
+        android:layout_marginTop="96dp"
         android:fontFamily="@font/baumans"
-        android:transitionName="@string/loginnow"
         android:text="@string/txt2"
         android:textColor="@color/nin"
         android:textSize="@dimen/font_14"
+        android:transitionName="@string/loginnow"
         app:layout_constraintEnd_toEndOf="@+id/create_textInputLayout2"
+        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="@+id/create_textInputLayout2"
         app:layout_constraintTop_toTopOf="@+id/imageView7" />
 
@@ -41,8 +42,8 @@
         android:id="@+id/create_textInputLayout2"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="272dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="16dp"
         android:transitionName="@string/Email"
         app:layout_constraintEnd_toEndOf="@+id/imageView7"
         app:layout_constraintHorizontal_bias="0.483"
@@ -53,8 +54,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/font_14"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textSize="@dimen/font_14" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -62,7 +63,7 @@
         android:id="@+id/create_textInputLayout3"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="272dp"
-        android:layout_height="41dp"
+        android:layout_height="54dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView7"
         app:layout_constraintEnd_toEndOf="@+id/imageView7"
         app:layout_constraintHorizontal_bias="0.483"
@@ -83,7 +84,7 @@
         android:id="@+id/create_textInputLayout4"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="272dp"
-        android:layout_height="41dp"
+        android:layout_height="54dp"
         android:transitionName="@string/Password"
         app:layout_constraintBottom_toBottomOf="@+id/imageView7"
         app:layout_constraintEnd_toEndOf="@+id/create_textInputLayout3"
@@ -226,14 +227,15 @@
         android:id="@+id/create_imageView11"
         android:layout_width="162dp"
         android:layout_height="29dp"
-        android:layout_marginBottom="52dp"
-        android:transitionName="@string/si3"
+        android:layout_marginBottom="24dp"
         android:contentDescription="@string/title"
+        android:transitionName="@string/si3"
         app:layout_constraintBottom_toBottomOf="@+id/imageView7"
         app:layout_constraintEnd_toEndOf="@+id/textView17"
+        app:layout_constraintHorizontal_bias="0.545"
         app:layout_constraintStart_toStartOf="@+id/create_textInputLayout4"
-        app:layout_constraintTop_toBottomOf="@+id/create_textInputLayout4"
-        app:layout_constraintVertical_bias="0.933"
+        app:layout_constraintTop_toBottomOf="@+id/textView17"
+        app:layout_constraintVertical_bias="0.25"
         app:srcCompat="@mipmap/signin_btn_logo" />
 
     <TextView
@@ -253,6 +255,8 @@
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="8dp"
         android:fontFamily="@font/baumans"
         android:text="@string/loginnow"
         android:textColor="@color/nin"
@@ -262,14 +266,15 @@
         app:layout_constraintEnd_toEndOf="@+id/textView17"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/create_imageView11"
-        app:layout_constraintTop_toBottomOf="@+id/create_imageView11"
-        app:layout_constraintVertical_bias="0.375" />
+        app:layout_constraintTop_toBottomOf="@+id/textView17"
+        app:layout_constraintVertical_bias="0.724" />
 
     <ProgressBar
         android:id="@+id/create_progressBar3"
         style="?android:attr/progressBarStyle"
         android:layout_width="74dp"
         android:layout_height="15dp"
+        android:layout_marginTop="4dp"
         android:indeterminate="true"
         android:maxWidth="74dp"
         android:maxHeight="@dimen/dom15dp"
