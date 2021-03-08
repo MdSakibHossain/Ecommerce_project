@@ -42,7 +42,7 @@ private FirebaseAuth auth;
                 FirebaseUser user = auth.getCurrentUser();
                 if(user == null)
                 {
-                    Intent login = new Intent(SplashScreen.this,GoMainActivity.class);
+                    Intent login = new Intent(SplashScreen.this,InOutScreen.class);
 //                    Pair[] pairs = new Pair[1];
 //                    pairs[0] = new Pair<View,String>(txt,"txt_transition");
 //                    ActivityOptions options=ActivityOptions.makeSceneTransitionAnimation(SplashScreen.this,pairs);
@@ -51,10 +51,10 @@ private FirebaseAuth auth;
                     finish();
                     overridePendingTransition(R.anim.slide_from_right,R.anim.slideout_from_left);
                 }else {
-//                    Intent main = new Intent(SplashScreen.this,MainUserActivity.class);
-//                    startActivity(main);
-//                    finish();
-//                    overridePendingTransition(R.anim.slide_from_right,R.anim.slideout_from_left);
+                    Intent main = new Intent(SplashScreen.this,GoMainActivity.class);
+                    startActivity(main);
+                    finish();
+                    overridePendingTransition(R.anim.slide_from_right,R.anim.slideout_from_left);
                 }
             }
         },SPLASH_TIME_OUT);

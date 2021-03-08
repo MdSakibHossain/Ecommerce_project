@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
 
     <application
         android:allowBackup="true"
@@ -23,17 +25,25 @@
         <activity
             android:name=".GoMainActivity"
             android:label="@string/title_activity_go_main"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ProductDetailsActivity" />
-        <activity android:name=".CategoryActivity" />
-        <activity android:name=".ConnectionFailed" />
-        <activity android:name=".SignUpActivity" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ProductDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".CategoryActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ConnectionFailed"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SignUpActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SignIn"
             android:screenOrientation="portrait" />
-        <activity android:name=".InOutScreen" />
-        <activity android:name=".ForgetPassword" />
-        <activity android:name=".UserProfile" />
+        <activity android:name=".InOutScreen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ForgetPassword"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UserProfile"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SplashScreen"
             android:screenOrientation="portrait">

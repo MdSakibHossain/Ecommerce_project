@@ -1,6 +1,7 @@
 package com.alfaco_1.testno1;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -45,6 +46,8 @@ public class MyWishlistFragment extends Fragment {
     }
 
     private RecyclerView wishlistRecyclerView;
+    private Dialog loadingDialog;
+    public static WishlistApdapter wishlistApdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,14 +65,30 @@ public class MyWishlistFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_wishlist, container, false);
 
+        /////loading dialog
+
+        loadingDialog = new Dialog(getContext());
+        loadingDialog.setContentView(R.layout.loading_progress_dialog);
+        loadingDialog.setCancelable(false);
+        loadingDialog.getWindow().setBackgroundDrawable(getContext().getDrawable(R.drawable.slider_background));
+        loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        loadingDialog.show();
+        ////loading dialog
+
         wishlistRecyclerView = view.findViewById(R.id.my_wishlist_recylerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         wishlistRecyclerView.setLayoutManager(linearLayoutManager);
 
-        List<WishlistModel> wishlistModelList = new ArrayList<>();
+       if(DBqueries.wishlistModelList.size() == 0){
+           DBqueries.wishList.clear();
+           DBqueries.loadWishlist(getContext(),loadingDialog,true);
+       }else {
+           loadingDialog.dismiss();
+       }
 
-        WishlistApdapter wishlistApdapter = new WishlistApdapter(wishlistModelList,true);
+
+        wishlistApdapter = new WishlistApdapter(DBqueries.wishlistModelList,true);
         wishlistRecyclerView.setAdapter(wishlistApdapter);
         wishlistApdapter.notifyDataSetChanged();
 

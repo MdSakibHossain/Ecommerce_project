@@ -12,10 +12,12 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -30,13 +32,25 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
+    public static boolean disableCloseBtn = false;
 private ImageView create_btn_img1,img3,img4;
 private TextView email_txt1,phone_txt1,password_txt1,log_txt1,txt01;
 private TextInputLayout email_layout1,phone_layout2,password_layout3;
 private ProgressBar progressBar;
 private FirebaseAuth fire_auth;
+private FirebaseFirestore firebaseFirestore;
+
+private boolean doublePressToExit = false;
 FirebaseDatabase rootNode1;
 DatabaseReference reference1;
 
@@ -45,6 +59,7 @@ DatabaseReference reference1;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_sign_up);
         //TextInputLayout section
         email_layout1 = (TextInputLayout)findViewById(R.id.create_textInputLayout2);
@@ -63,12 +78,14 @@ DatabaseReference reference1;
         progressBar = (ProgressBar)findViewById(R.id.create_progressBar3);
         //firebase auth
         fire_auth = FirebaseAuth.getInstance();
+        //firebase fire store
+        firebaseFirestore= FirebaseFirestore.getInstance();
 
         //work section
         img3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent signin = new Intent(SignUpActivity.this,SignIn.class);
+                Intent signin = new Intent(SignUpActivity.this,InOutScreen.class);
                 startActivity(signin);
                 finish();
                 overridePendingTransition(R.anim.slide_from_left,R.anim.slideout_from_right);
@@ -92,11 +109,29 @@ DatabaseReference reference1;
             }
         });
 
+//        if(disableCloseBtn){
+//            closeBtn.setVisibility(View.GONE);
+//        }else {
+//            closeBtn.setVisibility(View.VISIBLE);
+//        }
 
     }
     public void onBackPressed() {
+
+//        if(doublePressToExit){
+//            super.onBackPressed();
+//            return;
+//        }
+//        this.doublePressToExit = true;
+//        Toast.makeText(this,"Please click back again to exit",Toast.LENGTH_SHORT).show();
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                doublePressToExit = false;
+//            }
+//        },2000);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are sure you want to exit?")
+        builder.setMessage("Do you want leave this page ?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
@@ -200,7 +235,7 @@ DatabaseReference reference1;
         String email = email_layout1.getEditText().getText().toString();
         String password = password_layout3.getEditText().getText().toString();
         String phone = phone_layout2.getEditText().getText().toString();
-        Helper helper = new Helper(email,password,phone);
+        Helper helper = new Helper(email,phone,password);
         reference1.child(phone).setValue(helper);
         userRegis2();
     }
@@ -213,9 +248,7 @@ DatabaseReference reference1;
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful())
                 {
-                    progressBar.setVisibility(View.INVISIBLE);
-                    create_btn_img1.setEnabled(false);
-                    Toast.makeText(SignUpActivity.this," Registration Successful",Toast.LENGTH_LONG).show();
+                    User();
                 }else{
                     ConnectivityManager manager = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
                     NetworkInfo activeNetwork = manager.getActiveNetworkInfo();
@@ -236,5 +269,79 @@ DatabaseReference reference1;
                 }
             }
         });
+    }
+
+    private void User(){
+        Map<String,Object> userdata = new HashMap<>();
+        userdata.put("phone",phone_layout2.getEditText().getText().toString());
+          firebaseFirestore.collection("USERS")
+                  .document(fire_auth.getUid())
+                  .set(userdata)
+                  .addOnCompleteListener(new OnCompleteListener<Void>() {
+                      @Override
+                      public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+
+                            CollectionReference userDataReference= firebaseFirestore.collection("USERS")
+                                    .document(fire_auth.getUid())
+                                    .collection("USER_DATA");
+
+
+                            Map<String,Object> wishlistMap = new HashMap<>();
+                            wishlistMap.put("list_size", (long) 0);
+
+                            Map<String,Object> ratingsMap = new HashMap<>();
+                            ratingsMap.put("list_size", (long) 0);
+
+                            Map<String,Object> cartMap = new HashMap<>();
+                            cartMap.put("list_size", (long) 0);
+
+                            Map<String,Object> myAddressesMap = new HashMap<>();
+                            myAddressesMap.put("list_size", (long) 0);
+
+                            final List<String> documentNames = new ArrayList<>();
+                            documentNames.add("MY_WISHLIST");
+                            documentNames.add("MY_RATINGS");
+                            documentNames.add("MY_CART");
+                            documentNames.add("MY_ADDRESSES");
+
+                            List<Map<String,Object>> documentFields = new ArrayList<>();
+                            documentFields.add(wishlistMap);
+                            documentFields.add(ratingsMap);
+                            documentFields.add(cartMap);
+                            documentFields.add(myAddressesMap);
+
+
+                            for ( int x = 0; x < documentNames.size();x++){
+                                 final int finalX = x;
+                                 userDataReference.document(documentNames.get(x))
+                                         .set(documentFields.get(x))
+                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                             @Override
+                                             public void onComplete(@NonNull Task<Void> task) {
+                                                 if(task.isSuccessful()){
+                                                     if(finalX == documentNames.size() -1){
+                                                         SignIn();
+                                                     }
+                                                 }else {
+                                                     progressBar.setVisibility(View.INVISIBLE);
+                                                     create_btn_img1.setEnabled(true);
+                                                     String error = task.getException().getMessage();
+                                                     Toast.makeText(SignUpActivity.this, error, Toast.LENGTH_SHORT).show();
+                                                 }
+                                             }
+                                         });
+                             }
+
+                        }else {
+
+                        }
+                      }
+                  });
+    }
+    private void SignIn(){
+        Intent signInIntent = new Intent(SignUpActivity.this,GoMainActivity.class);
+        startActivity(signInIntent);
+        finish();
     }
 }

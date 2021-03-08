@@ -67,6 +67,10 @@ public class ForgetPassword extends AppCompatActivity {
         reset_img1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                error_img2.setVisibility(View.INVISIBLE);
+                error_txt2.setVisibility(View.INVISIBLE);
+                error_img1.setVisibility(View.INVISIBLE);
+                txt3.setVisibility(View.INVISIBLE);
                 String email1 = reset_email.getEditText().getText().toString().trim();
                 if(!validateEmail())
                 {
@@ -132,7 +136,7 @@ public class ForgetPassword extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are sure you want to exit?")
+        builder.setMessage("Do you want to leave this page?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override

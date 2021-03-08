@@ -1,9 +1,5 @@
 package com.alfaco_1.testno1;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +13,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -26,11 +26,11 @@ import com.google.firebase.auth.FirebaseAuth;
 public class SignIn extends AppCompatActivity {
     private FirebaseAuth auth;
 
-    private ImageView field_image, go_backbtn, signin_btn, gotouserpage;
+    private ImageView field_image, go_backbtn, signin_btn, closeBtn;
     private ProgressBar progressBar_signin;
     private TextInputLayout email_signin, password_signin;
     private TextView forgetpassword, createaccount, warningtxte, warningtxtp, txt5;
-
+    public static boolean disableCloseBtn = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +40,7 @@ public class SignIn extends AppCompatActivity {
         field_image = (ImageView) findViewById(R.id.signin_field);
         go_backbtn = (ImageView) findViewById(R.id.signin_back);
         signin_btn = (ImageView) findViewById(R.id.signin_btn_img);
-        gotouserpage = (ImageView) findViewById(R.id.imageView6_mainview);
+        closeBtn = (ImageView) findViewById(R.id.imageView6_mainview);
         //progress field
         progressBar_signin = (ProgressBar) findViewById(R.id.progressBar_signin);
         //TextInputLayout field
@@ -55,7 +55,7 @@ public class SignIn extends AppCompatActivity {
         //must create huck of firebase auth otherwise it won't work be careful
         auth = FirebaseAuth.getInstance();
         //forget password
-        gotouserpage.setOnClickListener(new View.OnClickListener() {
+        closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent user = new Intent(SignIn.this, GoMainActivity.class);
@@ -138,12 +138,14 @@ public class SignIn extends AppCompatActivity {
                         }
                     }
                 });
-
+//            if(disableCloseBtn){
+//              closeBtn.setVisibility(View.GONE);
+//            }else {
+//                closeBtn.setVisibility(View.VISIBLE);
+//            }
 
             }
         });
-
-
     }
 
     private Boolean validateEmail1() {
@@ -177,8 +179,9 @@ public class SignIn extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are sure you want to exit?")
+        builder.setMessage("Do you want to leave this page?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override

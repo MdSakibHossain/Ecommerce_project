@@ -38,11 +38,12 @@ class HorizontalProductScrollAdapter extends RecyclerView.Adapter<HorizontalProd
     String title = horizontalProductScrollModels.get(position).getProductTitle();
     String description = horizontalProductScrollModels.get(position).getProductDescription();
     String price = horizontalProductScrollModels.get(position).getProductPrice();
-
-  viewHolder.setProductImage(resource);
-  viewHolder.setProductTile(title);
-  viewHolder.setProductDescription(description);
-  viewHolder.setProductPrice(price);
+   String productID = horizontalProductScrollModels.get(position).getProductID();
+    viewHolder.setData(productID,resource,title,description,price);
+//  viewHolder.setProductImage(resource,title,description,price);
+////  viewHolder.setProductTile(title);
+////  viewHolder.setProductDescription(description);
+////  viewHolder.setProductPrice(price);
 
     }
 
@@ -69,27 +70,31 @@ class HorizontalProductScrollAdapter extends RecyclerView.Adapter<HorizontalProd
             productDescription = itemView.findViewById(R.id.h_s_product_description);
             productPrice = itemView.findViewById(R.id.h_s_product_price);
 
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent productDetailsIntent = new Intent(itemView.getContext(),ProductDetailsActivity.class);
-                    itemView.getContext().startActivity(productDetailsIntent);
-                }
-            });
         }
-        private void setProductImage(String resource){
-            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.mipmap.h1)).into(productImage);
-        }
-        private void setProductTile(String title){
+        private void setData(final String productID, String resource, String title, String description, String price){
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.mipmap.placeholder_small)).into(productImage);
             productTitle.setText(title);
-        }
-        private void setProductDescription(String description){
             productDescription.setText(description);
-        }
-        private void setProductPrice(String price){
             productPrice.setText("Tk."+price+"/-");
+
+            if(!title.equals(""))
+            {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent productDetailsIntent = new Intent(itemView.getContext(), ProductDetailsActivity.class);
+                        productDetailsIntent.putExtra("PRODUCT_ID",productID);
+                        itemView.getContext().startActivity(productDetailsIntent);
+                    }
+                });
+            }
         }
+//        private void setProductTile(){
+//        }
+//        private void setProductDescription(){
+//        }
+//        private void setProductPrice(){
+//        }
 
     }
 }

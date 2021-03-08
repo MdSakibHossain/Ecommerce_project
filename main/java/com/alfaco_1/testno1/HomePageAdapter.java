@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -31,6 +33,7 @@ import java.util.TimerTask;
 class HomePageAdapter extends RecyclerView.Adapter {
 private List<HomePageModel> homePageModelList;
 private RecyclerView.RecycledViewPool recycledViewPool;
+private int lastPosition = -1;
 public HomePageAdapter(List<HomePageModel>homePageModelList){
     this.homePageModelList = homePageModelList;
     recycledViewPool = new RecyclerView.RecycledViewPool();
@@ -62,12 +65,12 @@ public HomePageAdapter(List<HomePageModel>homePageModelList){
              case HomePageModel.STRIP_AD_BANNER:
                  View stripAdView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.strip_ad_layout,viewGroup,false);
                  return new StripAdBannerViewHolder(stripAdView);
-             case HomePageModel.HORIZONTAL_PRODUCT_VIEW:
-                 View horizontalProuctView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.horizontal_scroll_layout,viewGroup,false);
-                 return new HorizontalProductViewholder(horizontalProuctView);
-             case HomePageModel.GRID_PRODUCT_VIEW:
+             case HomePageModel.GRID_PRODUCT_VIEW://from here
                  View gridProuctView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.grid_product_layout,viewGroup,false);
                  return new gridProductViewHolder(gridProuctView);
+             case HomePageModel.HORIZONTAL_PRODUCT_VIEW://changed
+                 View horizontalProuctView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.horizontal_scroll_layout,viewGroup,false);
+                 return new HorizontalProductViewholder(horizontalProuctView);
              default:
                  return null;
          }
@@ -100,6 +103,11 @@ public HomePageAdapter(List<HomePageModel>homePageModelList){
         default:
             return;
     }
+        if(lastPosition < position) {
+            Animation animation = AnimationUtils.loadAnimation(viewholder.itemView.getContext(), R.anim.fade_in);
+            viewholder.itemView.setAnimation(animation);
+            lastPosition = position;
+        }
     }
 
     @Override
@@ -214,7 +222,7 @@ public HomePageAdapter(List<HomePageModel>homePageModelList){
             stripAdContainer = itemView.findViewById(R.id.strip_ad_container);
         }
         private void setStripAd(String resource,String color){
-            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.mipmap.h1)).into(stripAdImage);
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.mipmap.placeholder_big)).into(stripAdImage);
 
             stripAdContainer.setBackgroundColor(Color.parseColor(color));
         }
@@ -287,32 +295,41 @@ public HomePageAdapter(List<HomePageModel>homePageModelList){
                 TextView productDescription = gridProductLayout.getChildAt(x).findViewById(R.id.h_s_product_description);
                 TextView productPrice = gridProductLayout.getChildAt(x).findViewById(R.id.h_s_product_price);
 
-                Glide.with(itemView.getContext()).load(horizontalProductScrollModelList.get(x).getProductImage()).apply(new RequestOptions().placeholder(R.mipmap.h1)).into(productImage);
+                Glide.with(itemView.getContext()).load(horizontalProductScrollModelList.get(x).getProductImage()).apply(new RequestOptions().placeholder(R.mipmap.placeholder_small)).into(productImage);
                 productTitle.setText(horizontalProductScrollModelList.get(x).getProductTitle());
                 productDescription.setText(horizontalProductScrollModelList.get(x).getProductDescription());
                 productPrice.setText("Tk."+horizontalProductScrollModelList.get(x).getProductPrice()+"/-");
+//                productPrice.setText(horizontalProductScrollModelList.get(x).getProductPrice());
+
 
                 gridProductLayout.getChildAt(x).setBackgroundColor(Color.parseColor("#FFFFFF"));
 
-                gridProductLayout.getChildAt(x).setOnClickListener(new View.OnClickListener() {
+                if(!title.equals(""))
+                {
+                    final int finalX = x;
+                    gridProductLayout.getChildAt(x).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent productDetailsIntent = new Intent(itemView.getContext(), ProductDetailsActivity.class);
+                            productDetailsIntent.putExtra("PRODUCT_ID",horizontalProductScrollModelList.get(finalX).getProductID());
+                            itemView.getContext().startActivity(productDetailsIntent);
+                        }
+                    });
+                }
+            }
+
+            if(!title.equals("")) {
+                gridLayoutViewAllBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent productDetailsIntent = new Intent(itemView.getContext(),ProductDetailsActivity.class);
-                        itemView.getContext().startActivity(productDetailsIntent);
+                        ViewAllActivity.horizontalProductScrollModelList = horizontalProductScrollModelList;
+                        Intent viewAllIntent = new Intent(itemView.getContext(), ViewAllActivity.class);
+                        viewAllIntent.putExtra("layout_code", 1);
+                        viewAllIntent.putExtra("title", title);
+                        itemView.getContext().startActivity(viewAllIntent);
                     }
                 });
             }
-
-            gridLayoutViewAllBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ViewAllActivity.horizontalProductScrollModelList = horizontalProductScrollModelList;
-                    Intent viewAllIntent = new Intent(itemView.getContext(),ViewAllActivity.class);
-                    viewAllIntent.putExtra("layout_code",1);
-                    viewAllIntent.putExtra("title",title);
-                    itemView.getContext().startActivity(viewAllIntent);
-                }
-            });
 
         }
     }

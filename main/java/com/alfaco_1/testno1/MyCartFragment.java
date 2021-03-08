@@ -1,27 +1,20 @@
 package com.alfaco_1.testno1;
 
-import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,6 +41,9 @@ public class MyCartFragment extends Fragment  {
 
     private RecyclerView cartItemsRecyclerView;
     private Button continueBtn;
+    private Dialog loadingDialog;
+    public   static CartAdapter cartAdapter;
+    private TextView totalAmount;
 
     /**
      * Use this factory method to create a new instance of
@@ -84,29 +80,62 @@ public class MyCartFragment extends Fragment  {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_cart, container, false);
+
+        /////loading dialog
+
+        loadingDialog = new Dialog(getContext());
+        loadingDialog.setContentView(R.layout.loading_progress_dialog);
+        loadingDialog.setCancelable(false);
+        loadingDialog.getWindow().setBackgroundDrawable(getContext().getDrawable(R.drawable.slider_background));
+        loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        loadingDialog.show();
+        ////loading dialog
+
         cartItemsRecyclerView = view.findViewById(R.id.cart_items_recyclerview);
         continueBtn = view.findViewById(R.id.cart_continue_btn);
+        totalAmount = view.findViewById(R.id.total_cart_amount);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         cartItemsRecyclerView.setLayoutManager(layoutManager);
 
+        if(DBqueries.cartItemModelList.size() == 0){
+            DBqueries.cartList.clear();
+            DBqueries.loadCartList(getContext(),loadingDialog,true,new TextView(getContext()),totalAmount);
+        }else {
+            if(DBqueries.cartItemModelList.get(DBqueries.cartItemModelList.size() -1).getType() == CartItemModel.TOTAL_AMOUNT){
+                LinearLayout parent = (LinearLayout) totalAmount.getParent().getParent();
+                parent.setVisibility(View.VISIBLE);
+            }
+            loadingDialog.dismiss();
+        }
 
-        List<CartItemModel> cartItemModelList = new ArrayList<>();
 
-        cartItemModelList.add(new CartItemModel(0,R.mipmap.phone2,"Huawei P30",2,"Tk.89999/-","Tk.120,000",1,0,0));
-        cartItemModelList.add(new CartItemModel(0,R.mipmap.phone2,"Huawei P30",0,"Tk.89999/-","Tk.120,000",1,1,0));
-        cartItemModelList.add(new CartItemModel(0,R.mipmap.phone2,"Huawei P30",2,"Tk.89999/-","Tk.120,000",1,2,0));
-        cartItemModelList.add(new CartItemModel(1,"Price (3 items)","Tk.269,997/-","Free","Tk.269,997/-","270,997/-"));
-
-        CartAdapter cartAdapter = new CartAdapter(cartItemModelList);
+        cartAdapter = new CartAdapter(DBqueries.cartItemModelList,totalAmount,true);
         cartItemsRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
 
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent  delivery = new Intent(getContext(),AddAddressActivity.class);
-                getContext().startActivity(delivery);
+                DeliveryActivity.cartItemModelList = new ArrayList<>();
+
+                for (int i = 0; i <DBqueries.cartItemModelList.size() ; i++) {
+                    CartItemModel cartItemModel = DBqueries.cartItemModelList.get(i);
+                    if(cartItemModel.isInStock()){
+                        DeliveryActivity.cartItemModelList.add(cartItemModel);
+                    }
+                }
+                DeliveryActivity.cartItemModelList.add(new CartItemModel(CartItemModel.TOTAL_AMOUNT));
+
+                loadingDialog.show();
+                if(DBqueries.adddressesModelList.size() == 0){
+                    DBqueries.loadAddresses(getContext(),loadingDialog);
+                }else{
+                    loadingDialog.dismiss();
+                    Intent deliveryIntent = new Intent(getContext(), DeliveryActivity.class);
+                    startActivity(deliveryIntent);
+                }
             }
         });
 

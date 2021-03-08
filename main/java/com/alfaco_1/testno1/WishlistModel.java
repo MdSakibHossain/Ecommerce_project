@@ -1,6 +1,7 @@
 package com.alfaco_1.testno1;
 
 class WishlistModel {
+    private String productId;
     private String productImage;
     private String productTitle;
     private long freeCoupen;
@@ -10,7 +11,8 @@ class WishlistModel {
     private String cuttedPrice;
     private boolean COD;
 
-    public WishlistModel(String productImage, String productTitle, long freeCoupen, String rating, long totalRating, String productPrice, String cuttedPrice, boolean COD) {
+    public WishlistModel(String productId,String productImage, String productTitle, long freeCoupen, String rating, long totalRating, String productPrice, String cuttedPrice, boolean COD) {
+        this.productId = productId;
         this.productImage = productImage;
         this.productTitle = productTitle;
         this.freeCoupen = freeCoupen;
@@ -19,6 +21,14 @@ class WishlistModel {
         this.productPrice = productPrice;
         this.cuttedPrice = cuttedPrice;
         this.COD = COD;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getProductImage() {

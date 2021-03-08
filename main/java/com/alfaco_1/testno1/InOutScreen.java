@@ -73,7 +73,5 @@ public class InOutScreen extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
-//modify needed
-
     }
 }

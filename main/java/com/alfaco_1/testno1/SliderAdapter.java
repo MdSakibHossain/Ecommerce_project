@@ -28,10 +28,14 @@ class SliderAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.slider_layout,container,false);
         ConstraintLayout bannerContainer = view.findViewById(R.id.banner_container);
-        bannerContainer.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(sliderModelList.get(position).getBackgroundColor())));
-        ImageView banner = view.findViewById(R.id.banner_slide);
-        Glide.with(container.getContext()).load(sliderModelList.get(position).getBanner()).apply(new RequestOptions().placeholder(R.mipmap.h1)).into(banner);
-        container.addView(view,0);
+         try{
+             bannerContainer.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(sliderModelList.get(position).getBackgroundColor())));
+             ImageView banner = view.findViewById(R.id.banner_slide);
+             Glide.with(container.getContext()).load(sliderModelList.get(position).getBanner()).apply(new RequestOptions().placeholder(R.mipmap.placeholder_big)).into(banner);
+             container.addView(view,0);
+         }catch (Exception IllegalArgumentException){
+             System.out.println("Exception handled");
+         }// Here is problem....but i handled using try catch do not know the problem
         return view;
     }
 
